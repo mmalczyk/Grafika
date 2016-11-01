@@ -1,6 +1,5 @@
 package RGBImage;
 
-import Jama.Matrix;
 import PictureFilter.PictureFilter;
 
 import java.awt.*;
@@ -10,6 +9,7 @@ import PictureFilter.FilterFactory;
 
 /**
  * Created by Magda on 05.10.2016.
+ * Framework for picture operations.
  */
 public class FilterablePicture {
 
@@ -31,9 +31,6 @@ public class FilterablePicture {
         }
     }
 
-    private Matrix redPicture;
-    private Matrix greenPicture;
-    private Matrix bluePicture;
     private Picture picture;
 
     private PictureFilter filter;
@@ -46,28 +43,11 @@ public class FilterablePicture {
         width = new SafePictureEdges(picture.width());
         height = new SafePictureEdges(picture.height());
 
-        redPicture = new Matrix(width(), height());
-        greenPicture = new Matrix(width(), height());
-        bluePicture = new Matrix(width(), height());
-        splitIntoRGB();
         filter = FilterFactory.getFilter(this, filterType);
         picture = applyFilter(filter);
     }
 
     //private methods
-
-    private void splitIntoRGB() {
-        Color color;
-        for (int i=0; i <width(); i++)
-            for (int j = 0; j < height(); j++)
-            {
-                color = picture.get(i, j);
-                redPicture.set(i, j, color.getRed());
-                greenPicture.set(i, j, color.getGreen());
-                bluePicture.set(i, j, color.getBlue());
-            }
-    }
-
     private Picture applyFilter(PictureFilter filter) {
         if (filter != null) {
             Picture filteredPicture = new Picture(picture.width(), picture.height());
@@ -80,10 +60,7 @@ public class FilterablePicture {
             return getPicture();
     }
 
-
-    //protected methods
-
-    protected Color pickColor(int i, int j) {
+    private Color pickColor(int i, int j) {
         return filter.filter(i, j);
     }
 
@@ -93,32 +70,10 @@ public class FilterablePicture {
         return picture;
     }
 
-    public Color getAt(int i, int j, Color color)  {
+    public Color getAt(int i, int j)    {
         i = width.boundOff(i);
         j = height.boundOff(j);
-        if (color == null)
-            return picture.get(i, j);
-        if (color.equals(Color.RED))
-            return new Color((int)redPicture.get(i, j), 0, 0);
-        if (color.equals(Color.GREEN))
-            return new Color(0, (int)greenPicture.get(i, j), 0);
-        if (color.equals(Color.BLUE))
-            return new Color(0, 0, (int)bluePicture.get(i, j));
-        throw new UnsupportedOperationException("No such color category supported");
-    }
-
-    public int getInt(int i, int j, Color color)  {
-        i = width.boundOff(i);
-        j = height.boundOff(j);
-        if (color == null)
-            return picture.get(i, j).getRGB();
-        if (color.equals(Color.RED))
-            return (int) redPicture.get(i, j);
-        if (color.equals(Color.GREEN))
-            return (int) greenPicture.get(i, j);
-        if (color.equals(Color.BLUE))
-            return (int) bluePicture.get(i, j);
-        throw new UnsupportedOperationException("No such color category supported");
+        return picture.get(i, j);
     }
 
     public int width()   {
