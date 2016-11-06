@@ -1,4 +1,4 @@
-package RGBImage;
+package SpecialColor;
 
 import java.awt.*;
 

@@ -1,11 +1,27 @@
 package RGBImage;
 
-import PictureFilter.PictureFilter;
-
 import java.awt.*;
 
 import PictureFilter.FilterType;
 import PictureFilter.FilterFactory;
+import PictureFilter.FilterWrapper;
+import PictureFilter.PictureFilter;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.IntervalMarker;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.statistics.HistogramDataset;
+import org.jfree.data.statistics.HistogramType;
+import org.jfree.data.xy.IntervalXYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.Layer;
+import org.jfree.ui.RectangleAnchor;
+import org.jfree.ui.TextAnchor;
+
+import javax.swing.*;
 
 /**
  * Created by Magda on 05.10.2016.
@@ -33,22 +49,29 @@ public class FilterablePicture {
 
     private Picture picture;
 
-    private PictureFilter filter;
+    private FilterWrapper filter;
     private SafePictureEdges width;
     private SafePictureEdges height;
 
-    public FilterablePicture(String path, FilterType filterType)   {
+    public FilterablePicture(String path, FilterType filterType, Double arg)   {
         picture = new Picture(path);
         picture.setOriginUpperLeft();
         width = new SafePictureEdges(picture.width());
         height = new SafePictureEdges(picture.height());
 
-        filter = FilterFactory.getFilter(this, filterType);
-        picture = applyFilter(filter);
+        FilterType[] filterTypes = filterType.getAllSubfilters();
+        for (FilterType type: filterTypes)    {
+            filter = FilterFactory.getFilter(this, type, arg);
+            picture = applyFilter(filter);
+        }
+    }
+
+    public FilterType getFilterType()   {
+        return filter.getType();
     }
 
     //private methods
-    private Picture applyFilter(PictureFilter filter) {
+    private Picture applyFilter(FilterWrapper filter) {
         if (filter != null) {
             Picture filteredPicture = new Picture(picture.width(), picture.height());
             for (int i = 0; i < picture.width(); i++)
@@ -57,7 +80,7 @@ public class FilterablePicture {
             return filteredPicture;
         }
         else
-            return getPicture();
+            return picture;
     }
 
     private Color pickColor(int i, int j) {
@@ -66,9 +89,13 @@ public class FilterablePicture {
 
     //public methods
 
-    public Picture getPicture() {
-        return picture;
+    public JComponent getJComponent()    {
+        if (filter.getType().isHistogram())
+            return getHistogram().getPanel();
+        else
+            return picture.getJLabel();
     }
+
 
     public Color getAt(int i, int j)    {
         i = width.boundOff(i);
@@ -84,6 +111,12 @@ public class FilterablePicture {
         return height.getUpperBound();
     }
 
+    private PictureHistogram getHistogram()    {
+        return new PictureHistogram(this);
+    }
 
+    public void save(String fileName)   {
+        picture.save(fileName);
+    }
 
 }

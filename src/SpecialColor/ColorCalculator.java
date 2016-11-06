@@ -1,11 +1,11 @@
-package RGBImage;
+package SpecialColor;
 import java.awt.*;
 
 
 
 /**
  * Created by Magda on 01.11.2016.
- * Class provides functions that take a Color object and return another - a modified version of the first one
+ * Class provides functions that take a SpecialColor object and return another - a modified version of the first one
  */
 public class ColorCalculator {
 
@@ -46,13 +46,6 @@ public class ColorCalculator {
 
     public static Color getFaded(Color color, int N)    {
         return SafeColor.getBoundedColor(color.getRed() + N, color.getGreen() + N, color.getBlue() + N);
-    }
-
-    public static Color getFromLUT(Color color, int[] LUT)   {
-        int newRed = LUT[color.getRed()];
-        int newGreen = LUT[color.getGreen()];
-        int newBlue = LUT[color.getBlue()];
-        return new Color(Math.abs(newRed), Math.abs(newGreen), Math.abs(newBlue));
     }
 
     private static Color add(Color color1, Color color2, double s1, double s2)   {

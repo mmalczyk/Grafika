@@ -1,6 +1,6 @@
 package PictureFilter;
-import RGBImage.ColorCalculator;
 import RGBImage.FilterablePicture;
+import SpecialColor.ColorCalculator;
 
 import java.awt.*;
 
@@ -8,14 +8,14 @@ import java.awt.*;
  * Created by Magda on 01.11.2016.
  * Picture filter that needs a lookup table
  */
-class LUTFilter implements PictureFilter{
+public class SimpleLUTFilter implements PictureFilter{
 
-    private int[] LUT;
-    private FilterablePicture picture;
+    protected int[] LUT;
+    protected FilterablePicture picture;
 
-    LUTFilter(FilterablePicture picture)  {
-        LUT = createLookUpTable(1);
+    public SimpleLUTFilter(FilterablePicture picture)  {
         this.picture = picture;
+        LUT = createLookUpTable(1);
     }
 
     private static int[] createLookUpTable(int newB)
@@ -29,13 +29,17 @@ class LUTFilter implements PictureFilter{
     }
 
     private static int getColor(int color, int delta)   {
-        double firstVar = (color - (delta / 2) - 1) / delta;
+        double firstVar = ((double)color - ((double)delta / 2.) - 1.) / (double)delta;
         int t = (delta/2) - 1;
         return (int)Math.floor(Math.max(firstVar, 0) * delta + t);
     }
 
-    @Override
-    public Color filter(int i, int j) {
-        return ColorCalculator.getFromLUT(picture.getAt(i,j), LUT);
+    public Color filter (int i, int j)
+    {
+        Color color = picture.getAt(i,j);
+        int newRed = LUT[color.getRed()];
+        int newGreen = LUT[color.getGreen()];
+        int newBlue = LUT[color.getBlue()];
+        return new Color(Math.abs(newRed), Math.abs(newGreen), Math.abs(newBlue));
     }
 }

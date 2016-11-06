@@ -271,7 +271,7 @@ public final class Picture implements ActionListener {
     public void set(int col, int row, Color color) {
         validateCol(col);
         validateRow(row);
-        if (color == null) throw new NullPointerException("can't set Color to null");
+        if (color == null) throw new NullPointerException("can't set SpecialColor to null");
         if (isOriginUpperLeft) image.setRGB(col, row, color.getRGB());
         else                   image.setRGB(col, height - row - 1, color.getRGB());
     }
