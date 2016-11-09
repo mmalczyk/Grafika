@@ -71,6 +71,8 @@ public class TabbedPane extends JPanel {
         baseImageMemory.put(FilterType.SpreadAndSmoothed, new File("images\\kobieta.jpg"));
 
         baseImageMemory.put(FilterType.SpreadSmoothedGreyscale, new File("images\\kobieta.jpg"));
+
+        argMemory.put(FilterType.UniformSpreadDisruption, 100.);
     }
 
     public TabbedPane(FilterType[] tabOrder) {

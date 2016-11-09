@@ -42,6 +42,7 @@ public class FilterFactory {
             case Contrast: filter = getContrastFilter(picture, arg); break;
             case Spread: filter = getSpreadFilter(picture, arg); break;
             case Smoothed: filter = getSmoothedFilter(picture, arg); break;
+            case UniformSpreadDisruption: filter = getUniformSpreadFilter(picture, arg); break;
             default: filter = getDefaultFilter(picture, arg);
         }
         return new FilterWrapper(filter, modType);
@@ -153,4 +154,8 @@ public class FilterFactory {
         return new SmoothedFilter(picture);
     }
 
+    private static PictureFilter getUniformSpreadFilter(FilterablePicture picture, Double level) {
+        final double probability = 10;
+        return (int i, int j) -> ColorCalculator.addUniformSpreadDisruption(picture.getAt(i, j), level, probability);
+    }
 }

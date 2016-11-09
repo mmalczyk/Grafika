@@ -12,7 +12,7 @@ public enum FilterType {
     LUT(9), Faded(10), Added(11), AddedAndSaturated(12), AddedWithTransparency(13), Subtracted(14), Multiplied(15),
     Divided(16), DifferencesBySubtraction(17), DifferencesByDivision(18), RHistogram(19), GHistogram(20), BHistogram(21),
     GreyScaleHistogram(22), Contrast(23), LHistogram(24), Spread(25), Smoothed(26), SpreadAndSmoothed(27),
-    SpreadSmoothedGreyscale(28);
+    SpreadSmoothedGreyscale(28), UniformSpreadDisruption(29);
 
     private int value;
 
@@ -20,7 +20,7 @@ public enum FilterType {
             "Rotated", "Displaced", "LUT", "Faded", "Added", "AddedAndSaturated", "AddedWithTransparency",
             "Subtracted", "Multiplied", "Divided", "DifferencesBySubtraction", "DifferencesByDivision", "RHistogram",
             "GHistogram", "BHistogram", "GreyScaleHistogram", "Contrast", "LHistogram", "Spread", "Smoothed",
-            "SpreadAndSmoothed", "SpreadSmoothedGreyscale"
+            "SpreadAndSmoothed", "SpreadSmoothedGreyscale", "UniformSpreadDisruption"
     };
 
     FilterType(int value)   {
@@ -42,7 +42,8 @@ public enum FilterType {
     }
 
     public boolean hasVariable()    {
-        return EnumSet.of(Sepia, Rotated, Displaced, Faded, Added, AddedAndSaturated, AddedWithTransparency, Contrast).contains(this);
+        return EnumSet.of(Sepia, Rotated, Displaced, Faded, Added, AddedAndSaturated, AddedWithTransparency,
+                Contrast, UniformSpreadDisruption).contains(this);
     }
 
     public boolean isLayered()  {

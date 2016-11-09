@@ -22,8 +22,8 @@ public class SpreadFilter implements PictureFilter{
     }
 
     private void findTotalMinMax()    {
-        maxValue = 0;
-        minValue = 256;
+        maxValue = Double.MIN_VALUE;
+        minValue = Double.MAX_VALUE;
         double value;
         for(int i=0; i<picture.width(); i++)
             for (int j=0; j<picture.height(); j++)  {
@@ -41,7 +41,7 @@ public class SpreadFilter implements PictureFilter{
         double[] lut = new double[imax+1];
 
         for (int i = 0; i <= imax; i++)
-            lut[i] = (double)imax/(maxValue-minValue)*(i-minValue);
+            lut[i] = ((double)imax/(maxValue-minValue))*(i-minValue);
         return lut;
     }
 

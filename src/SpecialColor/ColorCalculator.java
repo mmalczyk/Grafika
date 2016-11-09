@@ -1,6 +1,6 @@
 package SpecialColor;
 import java.awt.*;
-
+import java.util.concurrent.ThreadLocalRandom;
 
 
 /**
@@ -110,4 +110,11 @@ public class ColorCalculator {
         return (double) color1.getRGB() / (double) color2.getRGB() == 1. ? color1 : highlight;
     }
 
+
+    public static Color addUniformSpreadDisruption(Color color, Double level, double probability) {
+        int lev = (int)level.doubleValue();
+        boolean toDisrupt = ThreadLocalRandom.current().nextInt(0, 101) < probability;
+        int disruption = toDisrupt ? ThreadLocalRandom.current().nextInt(-lev,lev+1) : 0;
+        return SafeColor.getBoundedColor(color.getRed()+disruption, color.getGreen()+disruption, color.getBlue()+disruption);
+    }
 }

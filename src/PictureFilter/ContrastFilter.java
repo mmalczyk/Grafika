@@ -31,7 +31,8 @@ class ContrastFilter implements PictureFilter{
             else if (verge>imax)
                 lut[i] = imax;
             else
-                lut[i] = (int)verge;
+                lut[i] = verge;//(int) a*(i-(double)imax/2.) + i;
+            ;
 
         }
         return lut;
