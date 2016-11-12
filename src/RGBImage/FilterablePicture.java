@@ -5,21 +5,6 @@ import java.awt.*;
 import PictureFilter.FilterType;
 import PictureFilter.FilterFactory;
 import PictureFilter.FilterWrapper;
-import PictureFilter.PictureFilter;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.IntervalMarker;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.data.statistics.HistogramDataset;
-import org.jfree.data.statistics.HistogramType;
-import org.jfree.data.xy.IntervalXYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.Layer;
-import org.jfree.ui.RectangleAnchor;
-import org.jfree.ui.TextAnchor;
 
 import javax.swing.*;
 
@@ -119,4 +104,7 @@ public class FilterablePicture {
         picture.save(fileName);
     }
 
+    public Picture copyPicture()    {
+        return new Picture(picture);
+    }
 }

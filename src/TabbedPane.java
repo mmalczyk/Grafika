@@ -13,9 +13,6 @@ import RGBImage.FilterablePicture;
 
 public class TabbedPane extends JPanel {
 
-    private File defaultBaseImage = new File("images\\LENA_512.jpg");
-    private File defaultLayerImage = new File("images\\eagle.jpg");
-    private Double defaultArg = null;
 
     private JTabbedPane tabbedPane;
     private FilterType[] tabOrder;
@@ -23,65 +20,20 @@ public class TabbedPane extends JPanel {
     private  FilterablePicture currentPicture;
 
     //TODO allow custom layering of filters
+    //TODO multiple args in memory
+    //TODO better way to initialize memory
+    //TODO add description of arguments
 
-    //TODO refactor memory into inner class
-    private HashMap<FilterType, File> baseImageMemory = new HashMap<>();
-    private HashMap<FilterType, File> layerImageMemory = new HashMap<>();
-    private HashMap<FilterType, Double> argMemory = new HashMap<>();
-
-    private void loadMemory()   {
-        //TODO: memory as separate class
-        argMemory.put(FilterType.Sepia, 40.);
-
-        argMemory.put(FilterType.Rotated, 30.);
-
-        argMemory.put(FilterType.Displaced, 300.);
-
-        argMemory.put(FilterType.Faded, 200.);
-
-        baseImageMemory.put(FilterType.Added, new File("images\\lake.jpg"));
-        layerImageMemory.put(FilterType.Added, new File("images\\eagle.jpg"));
-        argMemory.put(FilterType.Added, 0.5);
-
-        baseImageMemory.put(FilterType.AddedAndSaturated, new File("images\\lake.jpg"));
-        layerImageMemory.put(FilterType.AddedAndSaturated, new File("images\\eagle.jpg"));
-        argMemory.put(FilterType.AddedAndSaturated, 0.8);
-
-        baseImageMemory.put(FilterType.AddedWithTransparency, new File("images\\sphere.jpg"));
-        layerImageMemory.put(FilterType.AddedWithTransparency, new File("images\\texture.jpg"));
-        argMemory.put(FilterType.AddedWithTransparency, 0.3);
-
-        baseImageMemory.put(FilterType.Subtracted, new File("images\\lake.jpg"));
-        layerImageMemory.put(FilterType.Subtracted, new File("images\\eagle.jpg"));
-
-        baseImageMemory.put(FilterType.DifferencesBySubtraction, new File("images\\cinderella1.png"));
-        layerImageMemory.put(FilterType.DifferencesBySubtraction, new File("images\\cinderella2.png"));
-
-        baseImageMemory.put(FilterType.DifferencesByDivision, new File("images\\guy1.png"));
-        layerImageMemory.put(FilterType.DifferencesByDivision, new File("images\\guy2.png"));
-
-        baseImageMemory.put(FilterType.Multiplied, new File("images\\LENA_512.jpg"));
-        layerImageMemory.put(FilterType.Multiplied, new File("images\\circle.jpg"));
-
-        baseImageMemory.put(FilterType.Divided, new File("images\\lake.jpg"));
-        layerImageMemory.put(FilterType.Divided, new File("images\\eagle.jpg"));
-
-        argMemory.put(FilterType.Contrast, 1.9);
-
-        baseImageMemory.put(FilterType.SpreadAndSmoothed, new File("images\\kobieta.jpg"));
-
-        baseImageMemory.put(FilterType.SpreadSmoothedGreyscale, new File("images\\kobieta.jpg"));
-
-        argMemory.put(FilterType.UniformSpreadDisruption, 100.);
-    }
+    private Memory memory;
 
     public TabbedPane(FilterType[] tabOrder) {
         super(new GridLayout(1, 1));
         setLayout(new BorderLayout());
         buildMainMenu();
 
-        loadMemory();
-        FilterFactory.setLayer(defaultLayerImage);
+        memory = new Memory();
+
+        FilterFactory.setLayer(memory.getDefaultLayerImage());
 
         tabbedPane = new JTabbedPane();
         this.tabOrder = tabOrder;
@@ -101,21 +53,9 @@ public class TabbedPane extends JPanel {
         int index = tabbedPane.getSelectedIndex();
         FilterType key = getTabsFilterType(index);
 
-        File base, layer;
-        Double arg;
-        if(baseImageMemory.containsKey(key))
-            base = baseImageMemory.get(key);
-        else
-            base = defaultBaseImage;
-        if(layerImageMemory.containsKey(key))
-            layer = layerImageMemory.get(key);
-        else
-            layer = defaultLayerImage;
-        if(argMemory.containsKey(key))
-            arg = argMemory.get(key);
-        else
-            arg = defaultArg;
-
+        File base = memory.baseGet(key);
+        File layer = memory.layerGet(key);
+        Double arg = memory.argGet(key);
 
         if (getTabsFilterType(index).isCompound())
             loadImage(base, layer, index, arg);
@@ -142,12 +82,15 @@ public class TabbedPane extends JPanel {
             button.addActionListener(
                     (ActionEvent ae) -> {
                         String textFieldValue = textField.getText();
-                        Double value = Double.valueOf(textFieldValue);
                         FilterType key = getTabsFilterType(tabbedPane.getSelectedIndex());
-                        if(argMemory.containsKey(key))
-                            argMemory.remove(key);
-                        argMemory.put(key, value);
+                        if (!textFieldValue.isEmpty())  {
+                            Double value = Double.valueOf(textFieldValue);
+                            memory.argPut(key, value);
+                        }
+                        else
+                            memory.argReset(key);
                         reloadSelectedImage();
+
                     }
             );
 
@@ -202,10 +145,8 @@ public class TabbedPane extends JPanel {
                 chooser.setCurrentDirectory(getDefaultDirectory());
                 if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     FilterType key = getTabsFilterType(tabbedPane.getSelectedIndex());
-                    if(baseImageMemory.containsKey(key))
-                        baseImageMemory.remove(key);
-                    baseImageMemory.put(key, chooser.getSelectedFile());
-
+                    File value = chooser.getSelectedFile();
+                    memory.basePut(key, value);
                     reloadSelectedImage();
                 }
             }}
@@ -218,10 +159,8 @@ public class TabbedPane extends JPanel {
                 chooser.setCurrentDirectory(getDefaultDirectory());
                 if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     FilterType key = getTabsFilterType(tabbedPane.getSelectedIndex());
-                    if(layerImageMemory.containsKey(key))
-                        layerImageMemory.remove(key);
-                    layerImageMemory.put(key, chooser.getSelectedFile());
-
+                    File value = chooser.getSelectedFile();
+                    memory.layerPut(key, value);
                     FilterFactory.setLayer(chooser.getSelectedFile());
                     reloadSelectedImage();
                 }

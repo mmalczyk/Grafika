@@ -1,5 +1,6 @@
 package SpecialColor;
 import java.awt.*;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -9,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class ColorCalculator {
 
+    private static Random random = new Random();
     //private
 
     private static int getAvg(Color color)  {
@@ -111,10 +113,31 @@ public class ColorCalculator {
     }
 
 
-    public static Color addUniformSpreadDisruption(Color color, Double level, double probability) {
+    private static boolean getOdds(double probability)    {
+        return ThreadLocalRandom.current().nextInt(0, 101) < probability;
+    }
+
+    public static Color addUniformDisruption(Color color, Double level, double probability) {
         int lev = (int)level.doubleValue();
-        boolean toDisrupt = ThreadLocalRandom.current().nextInt(0, 101) < probability;
-        int disruption = toDisrupt ? ThreadLocalRandom.current().nextInt(-lev,lev+1) : 0;
+        int disruption = getOdds(probability) ? ThreadLocalRandom.current().nextInt(-lev,lev+1) : 0;
         return SafeColor.getBoundedColor(color.getRed()+disruption, color.getGreen()+disruption, color.getBlue()+disruption);
     }
+
+    public static Color addNormalDisruption(Color color, Double deviation, Double mean, double probability) {
+        int disruption = getOdds(probability) ? (int) (random.nextGaussian() * deviation + mean) : 0;
+        return SafeColor.getBoundedColor(color.getRed()+disruption, color.getGreen()+disruption, color.getBlue()+disruption);
+    }
+
+    public static Color addSaltAndPepper(Color color, double probability) {
+        int disruption1 = getOdds(probability) ? (getOdds(50) ? 256 : -256) : 0;
+        int disruption2 = getOdds(probability) ? (getOdds(50) ? 256 : -256) : 0;
+        int disruption3 = getOdds(probability) ? (getOdds(50) ? 256 : -256) : 0;
+        return SafeColor.getBoundedColor(color.getRed()+disruption1, color.getGreen()+disruption2, color.getBlue()+disruption3);
+    }
+
+    public static Color addSaltAndPepperBW(Color color, double probability) {
+        int disruption = getOdds(probability) ? (getOdds(50) ? 256 : -256) : 0;
+        return SafeColor.getBoundedColor(color.getRed()+disruption, color.getGreen()+disruption, color.getBlue()+disruption);
+    }
+
 }
