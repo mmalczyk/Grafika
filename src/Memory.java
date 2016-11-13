@@ -64,20 +64,21 @@ public class Memory {
 
         baseImageMemory.put(FilterType.SpreadSmoothedGreyscale, new File("images\\kobieta.jpg"));
 
-        argMemory.put(FilterType.UniformSpreadDisruption, 50.);
+        argMemory.put(FilterType.UniformSpreadDisruption, 20.);
 
-        argMemory.put(FilterType.UniformSpreadDisruptionBW, 50.);
+        argMemory.put(FilterType.UniformSpreadDisruptionBW, 20.);
 
-        argMemory.put(FilterType.NormalDisruption, 10.);
+        argMemory.put(FilterType.NormalDisruption, 20.);
 
-        argMemory.put(FilterType.NormalDisruptionBW, 10.);
+        argMemory.put(FilterType.NormalDisruptionBW, 20.);
 
-        argMemory.put(FilterType.SaltAndPepper, 10.);
+        argMemory.put(FilterType.SaltAndPepper, 5.);
 
-        argMemory.put(FilterType.SaltAndPepperBW, 10.);
+        argMemory.put(FilterType.SaltAndPepperBW, 5.);
 
         argMemory.put(FilterType.MovingAverage, 1.);
 
+        argMemory.put(FilterType.MeanAverage, 1.);
     }
 
     public File getDefaultBaseImage() {

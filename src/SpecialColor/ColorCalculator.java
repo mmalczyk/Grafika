@@ -120,12 +120,12 @@ public class ColorCalculator {
     public static Color addUniformDisruption(Color color, Double level, double probability) {
         int lev = (int)level.doubleValue();
         int disruption = getOdds(probability) ? ThreadLocalRandom.current().nextInt(-lev,lev+1) : 0;
-        return SafeColor.getBoundedColor(color.getRed()+disruption, color.getGreen()+disruption, color.getBlue()+disruption);
+        return SafeColor.getModuloBoundedColor(color.getRed()+disruption, color.getGreen()+disruption, color.getBlue()+disruption);
     }
 
     public static Color addNormalDisruption(Color color, Double deviation, Double mean, double probability) {
         int disruption = getOdds(probability) ? (int) (random.nextGaussian() * deviation + mean) : 0;
-        return SafeColor.getBoundedColor(color.getRed()+disruption, color.getGreen()+disruption, color.getBlue()+disruption);
+        return SafeColor.getModuloBoundedColor(color.getRed()+disruption, color.getGreen()+disruption, color.getBlue()+disruption);
     }
 
     public static Color addSaltAndPepper(Color color, double probability) {

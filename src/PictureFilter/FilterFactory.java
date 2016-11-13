@@ -163,14 +163,14 @@ public class FilterFactory {
         return new SmoothedFilter(picture);
     }
 
-    private static PictureFilter getUniformSpreadFilter(FilterablePicture picture, Double level) {
-        final double probability = 10;
+    private static PictureFilter getUniformSpreadFilter(FilterablePicture picture, Double probability) {
+        final double level = 25;
         return (int i, int j) -> ColorCalculator.addUniformDisruption(picture.getAt(i, j), level, probability);
     }
 
-    private static PictureFilter getNormalDistributionFilter(FilterablePicture picture, Double deviation) {
-        final double probability = 10;
-        final double mean = 10;
+    private static PictureFilter getNormalDistributionFilter(FilterablePicture picture, Double probability) {
+        final double mean = 20;
+        final double deviation = 20;
         return (int i, int j) -> ColorCalculator.addNormalDisruption(picture.getAt(i, j), deviation, mean, probability);
     }
 
