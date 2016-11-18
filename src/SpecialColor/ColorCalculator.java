@@ -140,4 +140,19 @@ public class ColorCalculator {
         return SafeColor.getBoundedColor(color.getRed()+disruption, color.getGreen()+disruption, color.getBlue()+disruption);
     }
 
+    public static Color getY(Color originalColor)   {
+        return new YCbCrColor(originalColor).getY();
+    }
+
+    public static Color getCb(Color originalColor)   {
+        return new YCbCrColor(originalColor).getCb();
+    }
+
+    public static Color getCr(Color originalColor)   {
+        return new YCbCrColor(originalColor).getCr();
+    }
+
+    public static Color detectSkin(Color originalColor) {
+        return new HLSColor(originalColor).isSkin() ? originalColor : Color.WHITE;
+    }
 }

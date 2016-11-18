@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.nio.file.FileSystems;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import PictureFilter.FilterFactory;
@@ -67,7 +68,7 @@ public class TabbedPane extends JPanel {
         return tabOrder[index];
     }
 
-    private void setImage(JComponent image, int index)   {
+    private void setImage(ArrayList<JComponent> images, int index)   {
         //TODO allow two histograms to be loaded for comparison
         JPanel tab = (JPanel)(tabbedPane.getComponentAt(index));
         tab.removeAll();
@@ -98,7 +99,9 @@ public class TabbedPane extends JPanel {
             arg.add(button);
             panel.add(arg);
         }
-        panel.add(image);
+
+        for (JComponent image : images)
+            panel.add(image);
 
         tab.add(panel);
         tab.revalidate();
@@ -112,16 +115,25 @@ public class TabbedPane extends JPanel {
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
     }
 
+    private FilterablePicture getFilterablePicture(File file, FilterType filterType, Double arg) {
+        return new FilterablePicture(file.getPath(), filterType, arg);
+    }
+
     private void loadImage(File file, int index, Double arg) {
-        FilterablePicture picture = new FilterablePicture(
-                file.getPath(),
-                getTabsFilterType(index),
-                arg
-        );
+        FilterType filterType = getTabsFilterType(index);
 
-        currentPicture = picture;
+        FilterablePicture mainPicture = getFilterablePicture(file, filterType, arg);
+        currentPicture = mainPicture;
 
-        setImage(picture.getJComponent(), index);
+        ArrayList<JComponent> images = new ArrayList<>();
+        images.add(mainPicture.getJComponent());
+
+        FilterType[] subTypes = filterType.getSubTypes();
+        for (FilterType subType : subTypes)
+            images.add(getFilterablePicture(file, subType, arg).getJComponent());
+
+        //TODO what about the current picture? maybe I need an array instead
+        setImage(images, index);
     }
 
     private void loadImage(File baseFile, File layerFile, int index, Double arg) {

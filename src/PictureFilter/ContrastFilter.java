@@ -41,8 +41,8 @@ class ContrastFilter implements PictureFilter{
     public Color filter (int i, int j)
     {
         YCbCrColor color = new YCbCrColor(picture.getAt(i,j));
-        double lu = color.getLuminance();
-        color.setLuminance(LUT[(int)lu]);
+        double lu = color.getYValue();
+        color.setYValue(LUT[(int)lu]);
         return color.getRGB();
     }
 

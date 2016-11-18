@@ -75,7 +75,7 @@ public class PictureHistogram{
             case GHistogram: return color.getGreen();
             case BHistogram: return color.getBlue();
             case GreyScaleHistogram: return ColorCalculator.getBlackAndWhite(color).getRed(); //r g and b are set to avg
-            case LHistogram: return (int) (new YCbCrColor(color)).getLuminance();
+            case LHistogram: return (int) (new YCbCrColor(color)).getYValue();
             default: throw new UnsupportedOperationException("Unknown histogram operation");
         }
     }

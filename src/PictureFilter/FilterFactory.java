@@ -2,12 +2,13 @@ package PictureFilter;
 
 import SpecialColor.ColorCalculator;
 import RGBImage.FilterablePicture;
+import SpecialColor.HLSColor;
 import SpecialColor.SafeColor;
+import SpecialColor.YCbCrColor;
 
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * Created by Magda on 15.10.2016.
@@ -51,6 +52,16 @@ public class FilterFactory {
             case SaltAndPepperBW: filter = getSaltAndPepperBWFilter(picture, arg); break;
             case MovingAverage: filter = getMovingAverageFilter(picture, arg); break;
             case MeanAverage: filter = getMeanFilter(picture, arg); break;
+            case Y: filter = getYFilter(picture, arg); break;
+            case Cb: filter = getCbFilter(picture, arg); break;
+            case Cr: filter = getCrFilter(picture, arg); break;
+            case YCbCrToRGB: filter = getYCbCrtoRGBFilter(picture, arg); break;
+            case HLS: filter = getHLSFilter(picture, arg); break;
+            case H: filter = getHFilter(picture, arg); break;
+            case L: filter = getLFilter(picture, arg); break;
+            case S: filter = getSFilter(picture, arg); break;
+            case SkinDetection: filter = getSkinDetectionFilter(picture, arg); break;
+
 
             default: filter = getDefaultFilter(picture, arg);
         }
@@ -205,6 +216,42 @@ public class FilterFactory {
                 return pixels.get(pixels.size()/2);
             }
         };
+    }
+
+    private static PictureFilter getYFilter(FilterablePicture picture, Double arg)   {
+        return (int i, int j) -> ColorCalculator.getY(picture.getAt(i, j));
+    }
+
+    private static PictureFilter getCbFilter(FilterablePicture picture, Double arg)   {
+        return (int i, int j) -> ColorCalculator.getCb(picture.getAt(i, j));
+    }
+
+    private static PictureFilter getCrFilter(FilterablePicture picture, Double arg)   {
+        return (int i, int j) -> ColorCalculator.getCr(picture.getAt(i, j));
+    }
+
+    private static PictureFilter getYCbCrtoRGBFilter(FilterablePicture picture, Double arg)  {
+        return (int i, int j) -> new YCbCrColor(picture.getAt(i,j)).getRGB();
+    }
+
+    private static PictureFilter getHLSFilter(FilterablePicture picture, Double arg)  {
+        return (int i, int j) -> new HLSColor(picture.getAt(i,j)).getRGB();
+    }
+
+    private static PictureFilter getHFilter(FilterablePicture picture, Double arg)  {
+        return (int i, int j) -> new HLSColor(picture.getAt(i,j)).getH();
+    }
+
+    private static PictureFilter getLFilter(FilterablePicture picture, Double arg)  {
+        return (int i, int j) -> new HLSColor(picture.getAt(i,j)).getL();
+    }
+
+    private static PictureFilter getSFilter(FilterablePicture picture, Double arg)  {
+        return (int i, int j) -> new HLSColor(picture.getAt(i,j)).getS();
+    }
+
+    private static PictureFilter getSkinDetectionFilter(FilterablePicture picture, Double arg)  {
+        return (int i, int j) -> ColorCalculator.detectSkin(picture.getAt(i,j));
     }
 
 }

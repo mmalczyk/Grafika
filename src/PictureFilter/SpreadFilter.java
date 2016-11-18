@@ -27,7 +27,7 @@ public class SpreadFilter implements PictureFilter{
         double value;
         for(int i=0; i<picture.width(); i++)
             for (int j=0; j<picture.height(); j++)  {
-                value = new YCbCrColor(picture.getAt(i,j)).getLuminance();
+                value = new YCbCrColor(picture.getAt(i,j)).getYValue();
                 if (value < minValue)
                     minValue = value;
                 if (value > maxValue)
@@ -48,8 +48,8 @@ public class SpreadFilter implements PictureFilter{
     public Color filter (int i, int j)
     {
         YCbCrColor color = new YCbCrColor(picture.getAt(i,j));
-        double lu = color.getLuminance();
-        color.setLuminance(LUT[(int)lu]);
+        double lu = color.getYValue();
+        color.setYValue(LUT[(int)lu]);
         return color.getRGB();
     }
 

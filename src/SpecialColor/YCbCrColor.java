@@ -6,10 +6,10 @@ import java.awt.*;
  //http://www.equasys.de/colorconversion.html
  */
 public class YCbCrColor {
-    Color color;
-    double Y;
-    double Cb;
-    double Cr;
+    private Color color;
+    private double Y;
+    private double Cb;
+    private double Cr;
 
 
     public YCbCrColor(Color color) {
@@ -48,11 +48,17 @@ public class YCbCrColor {
         return color;
     }
 
-    public double getLuminance()  {
+    public Color getY() {return SafeColor.getBoundedColor((int)Y, (int)Y, (int)Y);}
+
+    public Color getCb() {return SafeColor.getBoundedColor((int)Cb, (int)Cb, (int)Cb);}
+
+    public Color getCr() {return SafeColor.getBoundedColor((int)Cr, (int)Cr, (int)Cr);}
+
+    public double getYValue()  {
         return Y;
     }
 
-    public void setLuminance(double Y)  {
+    public void setYValue(double Y)  {
         this.Y = Y;
         color = SafeColor.getBoundedColor(calculateR(), calculateG(), calculateB());
     }

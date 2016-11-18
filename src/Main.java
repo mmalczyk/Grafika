@@ -8,7 +8,7 @@ import PictureFilter.FilterType;
  */
 public class Main {
 
-    private FilterType[] tabOrder = FilterType.values();
+    private FilterType[] tabOrder = FilterType.getMainTypes();
 
 
     private TabbedPane tabbedPane;

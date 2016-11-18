@@ -26,7 +26,7 @@ public class SmoothedFilter implements PictureFilter{
         distribution = new double[imax+1];
         for(int i=0; i<picture.width(); i++)
             for (int j=0; j<picture.height(); j++)
-                distribution[(int)new YCbCrColor(picture.getAt(i,j)).getLuminance()]++;
+                distribution[(int)new YCbCrColor(picture.getAt(i,j)).getYValue()]++;
 
         double sum = picture.width()*picture.height();
         for(int i=1; i<=imax; i++)
@@ -50,8 +50,8 @@ public class SmoothedFilter implements PictureFilter{
     public Color filter (int i, int j)
     {
         YCbCrColor color = new YCbCrColor(picture.getAt(i,j));
-        double lu = color.getLuminance();
-        color.setLuminance(LUT[(int)lu]);
+        double lu = color.getYValue();
+        color.setYValue(LUT[(int)lu]);
         return color.getRGB();
     }
 

@@ -1,5 +1,7 @@
 package PictureFilter;
 
+import javafx.scene.control.Skin;
+
 import java.util.EnumSet;
 
 import static java.util.EnumSet.of;
@@ -13,7 +15,9 @@ public enum FilterType {
     Divided(16), DifferencesBySubtraction(17), DifferencesByDivision(18), RHistogram(19), GHistogram(20), BHistogram(21),
     GreyScaleHistogram(22), Contrast(23), LHistogram(24), Spread(25), Smoothed(26), SpreadAndSmoothed(27),
     SpreadSmoothedGreyscale(28), UniformSpreadDisruption(29), UniformSpreadDisruptionBW(30), NormalDisruption(31),
-    NormalDisruptionBW(32), SaltAndPepper(33), SaltAndPepperBW(34), MovingAverage(35), MeanAverage(36);
+    NormalDisruptionBW(32), SaltAndPepper(33), SaltAndPepperBW(34), MovingAverage(35), MeanAverage(36), toYCbCr(37),
+    Y(38), Cb(39), Cr(40), YCbCrToRGB(41), HLS(42), H(43), L(44), S(45), SkinDetection(46);
+
 
     private int value;
 
@@ -22,8 +26,24 @@ public enum FilterType {
             "Subtracted", "Multiplied", "Divided", "DifferencesBySubtraction", "DifferencesByDivision", "RHistogram",
             "GHistogram", "BHistogram", "GreyScaleHistogram", "Contrast", "LHistogram", "Spread", "Smoothed",
             "SpreadAndSmoothed", "SpreadSmoothedGreyscale", "UniformSpreadDisruption", "UniformSpreadDisruptionB&W",
-            "NormalDisruption", "NormalDisruptionBW", "SaltAndPepper", "SaltAndPepperBW", "MovingAverage", "MeanAverage"
+            "NormalDisruption", "NormalDisruptionBW", "SaltAndPepper", "SaltAndPepperBW", "MovingAverage", "MeanAverage",
+            "toYCbCr", "Y", "Cb", "Cr", "YCbCrToRGB", "HLS", "H", "L", "S", "SkinDetection"
     };
+
+    private static FilterType[] mainTypes = new FilterType[]{
+            Default, Red, Green, Blue, BlackAndWhite, Negative, Sepia, Rotated, Displaced,
+            LUT, Faded, Added, AddedAndSaturated, AddedWithTransparency, Subtracted, Multiplied,
+            Divided, DifferencesBySubtraction, DifferencesByDivision, RHistogram, GHistogram, BHistogram,
+            GreyScaleHistogram, Contrast, LHistogram, Spread, Smoothed, SpreadAndSmoothed,
+            SpreadSmoothedGreyscale, UniformSpreadDisruption, UniformSpreadDisruptionBW, NormalDisruption,
+            NormalDisruptionBW, SaltAndPepper, SaltAndPepperBW, MovingAverage, MeanAverage, toYCbCr, YCbCrToRGB, HLS,
+            SkinDetection
+
+    };
+
+    public static FilterType[] getMainTypes()   {
+        return mainTypes;
+    }
 
     FilterType(int value)   {
         this.value = value;
@@ -55,7 +75,20 @@ public enum FilterType {
                 UniformSpreadDisruptionBW, NormalDisruptionBW, SaltAndPepperBW).contains(this);
     }
 
-    public FilterType[] getAllSubfilters()  {
+    public FilterType[] getSubTypes() {
+        if (this == toYCbCr)
+            return new FilterType[]{Y, Cb, Cr};
+        else if (this == YCbCrToRGB)
+            return new FilterType[]{Default};
+        else if (this == HLS)
+            return new FilterType[]{H, L, S};
+        else if (this == SkinDetection)
+            return new FilterType[]{Default};
+        else
+            return new FilterType[]{};
+    }
+
+    public FilterType[] getAllSubFilters()  {
         if (isLayered())    {
             if (this == SpreadAndSmoothed)
                 return new FilterType[]{Smoothed, Spread};

@@ -79,6 +79,8 @@ public class Memory {
         argMemory.put(FilterType.MovingAverage, 1.);
 
         argMemory.put(FilterType.MeanAverage, 1.);
+
+        baseImageMemory.put(FilterType.SkinDetection, new File ("images\\face1.jpg"));
     }
 
     public File getDefaultBaseImage() {
