@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import PictureFilter.FilterFactory;
 import PictureFilter.FilterType;
@@ -58,7 +57,7 @@ public class TabbedPane extends JPanel {
         File layer = memory.layerGet(key);
         Double arg = memory.argGet(key);
 
-        if (getTabsFilterType(index).isCompound())
+        if (getTabsFilterType(index).isPictureCompound())
             loadImage(base, layer, index, arg);
         else
             loadImage(base, index, arg);

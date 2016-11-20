@@ -50,8 +50,8 @@ public class FilterFactory {
             case NormalDisruption: filter = getNormalDistributionFilter(picture, arg); break;
             case SaltAndPepper: filter = getSaltAndPepperFilter(picture, arg); break;
             case SaltAndPepperBW: filter = getSaltAndPepperBWFilter(picture, arg); break;
-            case MovingAverage: filter = getMovingAverageFilter(picture, arg); break;
-            case MeanAverage: filter = getMeanFilter(picture, arg); break;
+            case MovingAverageBW: filter = getMovingAverageBWFilter(picture, arg); break;
+            case MeanAverageBW: filter = getMeanBWFilter(picture, arg); break;
             case Y: filter = getYFilter(picture, arg); break;
             case Cb: filter = getCbFilter(picture, arg); break;
             case Cr: filter = getCrFilter(picture, arg); break;
@@ -61,6 +61,10 @@ public class FilterFactory {
             case L: filter = getLFilter(picture, arg); break;
             case S: filter = getSFilter(picture, arg); break;
             case SkinDetection: filter = getSkinDetectionFilter(picture, arg); break;
+            case RedEyes: filter = getRedEyesFilter(picture, arg); break;
+            case GreenPeppers: filter = getGreenPeppersFilter(picture, arg); break;
+            case MovingAverage: filter = getMovingAverageColorFilter(picture, arg); break;
+            case MeanAverage: filter = getMeanColorFilter(picture, arg); break;
 
 
             default: filter = getDefaultFilter(picture, arg);
@@ -193,10 +197,10 @@ public class FilterFactory {
         return (int i, int j) -> ColorCalculator.addSaltAndPepperBW(picture.getAt(i, j), probability);
     }
 
-    private static PictureFilter getMovingAverageFilter(FilterablePicture picture, Double radius) {
+    private static PictureFilter getMovingAverageBWFilter(FilterablePicture picture, Double radius) {
         return new AbstractMeanFilter(picture, (int)radius.doubleValue()) {
             @Override
-            protected Color calculate(ArrayList<Color> pixels) {
+            protected Color calculate(ArrayList<Color> pixels, int i, int j) {
                 int sumR = 0, sumG = 0, sumB = 9;
                 for(Color pixel : pixels)   {
                     sumR += pixel.getRed();
@@ -208,10 +212,10 @@ public class FilterFactory {
         };
     }
 
-    private static PictureFilter getMeanFilter(FilterablePicture picture, Double radius) {
+    private static PictureFilter getMeanBWFilter(FilterablePicture picture, Double radius) {
         return new AbstractMeanFilter(picture, (int)radius.doubleValue()) {
             @Override
-            protected Color calculate(ArrayList<Color> pixels) {
+            protected Color calculate(ArrayList<Color> pixels, int i, int j) {
                 pixels.sort((Color color1, Color color2) -> color1.getRGB()-color2.getRGB());
                 return pixels.get(pixels.size()/2);
             }
@@ -254,4 +258,47 @@ public class FilterFactory {
         return (int i, int j) -> ColorCalculator.detectSkin(picture.getAt(i,j));
     }
 
+    private static PictureFilter getGreenPeppersFilter(FilterablePicture picture, Double arg)  {
+        return (int i, int j) -> ColorCalculator.detectGreen(picture.getAt(i,j));
+    }
+
+    private static PictureFilter getRedEyesFilter(FilterablePicture picture, Double arg)  {
+        return (int i, int j) -> ColorCalculator.detectRed(picture.getAt(i,j));
+    }
+
+    private static PictureFilter getMovingAverageColorFilter(FilterablePicture picture, Double radius) {
+        return new AbstractMeanFilter(picture, (int)radius.doubleValue()) {
+            @Override
+            protected Color calculate(ArrayList<Color> pixels, int i, int j) {
+                double luminosity = 0;
+                for(Color pixel : pixels)
+                    luminosity += new YCbCrColor(pixel).getYValue();
+                Color original = picture.get(i,j);
+                YCbCrColor pixel = new YCbCrColor(original);
+                pixel.setYValue(luminosity/pixels.size());
+                return pixel.getRGB();
+            }
+        };
+    }
+
+    private static PictureFilter getMeanColorFilter(FilterablePicture picture, Double radius) {
+        return new AbstractMeanFilter(picture, (int)radius.doubleValue()) {
+            @Override
+            protected Color calculate(ArrayList<Color> pixels, int i, int j) {
+                pixels.sort((Color color1, Color color2) -> {
+                    double comparison =(new YCbCrColor(color1)).getYValue()-(new YCbCrColor(color2)).getYValue();
+                    if (comparison == 0)
+                        return 0;
+                    if (comparison < 0)
+                        return (int)Math.floor(comparison);
+                    else
+                        return (int)Math.ceil(comparison);
+                });
+                YCbCrColor newColor = new YCbCrColor(pixels.get(pixels.size()/2));
+                YCbCrColor original = new YCbCrColor(picture.get(i,j));
+                original.setYValue(newColor.getYValue());
+                return original.getRGB();
+            }
+        };
+    }
 }

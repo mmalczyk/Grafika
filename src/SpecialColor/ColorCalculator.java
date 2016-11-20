@@ -155,4 +155,14 @@ public class ColorCalculator {
     public static Color detectSkin(Color originalColor) {
         return new HLSColor(originalColor).isSkin() ? originalColor : Color.WHITE;
     }
+
+    public static Color detectGreen(Color originalColor) {
+        return new HLSColor(originalColor).isGreen() ? originalColor : Color.WHITE;
+    }
+
+    public static Color detectRed(Color originalColor) {
+        return new HLSColor(originalColor).isRed() ? originalColor : getBlackAndWhite(originalColor);
+    }
+
+
 }

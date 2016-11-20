@@ -1,7 +1,5 @@
 package PictureFilter;
 
-import javafx.scene.control.Skin;
-
 import java.util.EnumSet;
 
 import static java.util.EnumSet.of;
@@ -15,8 +13,9 @@ public enum FilterType {
     Divided(16), DifferencesBySubtraction(17), DifferencesByDivision(18), RHistogram(19), GHistogram(20), BHistogram(21),
     GreyScaleHistogram(22), Contrast(23), LHistogram(24), Spread(25), Smoothed(26), SpreadAndSmoothed(27),
     SpreadSmoothedGreyscale(28), UniformSpreadDisruption(29), UniformSpreadDisruptionBW(30), NormalDisruption(31),
-    NormalDisruptionBW(32), SaltAndPepper(33), SaltAndPepperBW(34), MovingAverage(35), MeanAverage(36), toYCbCr(37),
-    Y(38), Cb(39), Cr(40), YCbCrToRGB(41), HLS(42), H(43), L(44), S(45), SkinDetection(46);
+    NormalDisruptionBW(32), SaltAndPepper(33), SaltAndPepperBW(34), MovingAverageBW(35), MeanAverageBW(36), toYCbCr(37),
+    Y(38), Cb(39), Cr(40), YCbCrToRGB(41), HLS(42), H(43), L(44), S(45), SkinDetection(46), GreenPeppers(47),
+    RedEyes(48), MovingAverage(49), MeanAverage(50);
 
 
     private int value;
@@ -26,8 +25,9 @@ public enum FilterType {
             "Subtracted", "Multiplied", "Divided", "DifferencesBySubtraction", "DifferencesByDivision", "RHistogram",
             "GHistogram", "BHistogram", "GreyScaleHistogram", "Contrast", "LHistogram", "Spread", "Smoothed",
             "SpreadAndSmoothed", "SpreadSmoothedGreyscale", "UniformSpreadDisruption", "UniformSpreadDisruptionB&W",
-            "NormalDisruption", "NormalDisruptionBW", "SaltAndPepper", "SaltAndPepperBW", "MovingAverage", "MeanAverage",
-            "toYCbCr", "Y", "Cb", "Cr", "YCbCrToRGB", "HLS", "H", "L", "S", "SkinDetection"
+            "NormalDisruption", "NormalDisruptionBW", "SaltAndPepper", "SaltAndPepperBW", "MovingAverageBW", "MeanAverageBW",
+            "toYCbCr", "Y", "Cb", "Cr", "YCbCrToRGB", "HLS", "H", "L", "S", "SkinDetection", "GreenPeppers", "RedEyes",
+            "MovingAverage", "MeanAverage"
     };
 
     private static FilterType[] mainTypes = new FilterType[]{
@@ -36,8 +36,8 @@ public enum FilterType {
             Divided, DifferencesBySubtraction, DifferencesByDivision, RHistogram, GHistogram, BHistogram,
             GreyScaleHistogram, Contrast, LHistogram, Spread, Smoothed, SpreadAndSmoothed,
             SpreadSmoothedGreyscale, UniformSpreadDisruption, UniformSpreadDisruptionBW, NormalDisruption,
-            NormalDisruptionBW, SaltAndPepper, SaltAndPepperBW, MovingAverage, MeanAverage, toYCbCr, YCbCrToRGB, HLS,
-            SkinDetection
+            NormalDisruptionBW, SaltAndPepper, SaltAndPepperBW, MovingAverageBW, MeanAverageBW, toYCbCr, YCbCrToRGB, HLS,
+            SkinDetection, GreenPeppers, RedEyes, MovingAverage, MeanAverage
 
     };
 
@@ -53,7 +53,7 @@ public enum FilterType {
         return names[value];
     }
 
-    public boolean isCompound()  {
+    public boolean isPictureCompound()  {
         return EnumSet.of(Added, AddedAndSaturated, AddedWithTransparency, Subtracted, Multiplied, Divided,
                 DifferencesByDivision, DifferencesBySubtraction)
                 .contains(this);
@@ -66,11 +66,11 @@ public enum FilterType {
     public boolean hasVariable()    {
         return EnumSet.of(Sepia, Rotated, Displaced, Faded, Added, AddedAndSaturated, AddedWithTransparency,
                 Contrast, UniformSpreadDisruption, UniformSpreadDisruptionBW, NormalDisruption, NormalDisruptionBW,
-                SaltAndPepper, SaltAndPepperBW, MovingAverage, MeanAverage
+                SaltAndPepper, SaltAndPepperBW, MovingAverageBW, MeanAverageBW, MovingAverage, MeanAverage
                 ).contains(this);
     }
 
-    public boolean isLayered()  {
+    public boolean isFilterLayered()  {
         return EnumSet.of(SpreadAndSmoothed, SpreadSmoothedGreyscale,
                 UniformSpreadDisruptionBW, NormalDisruptionBW, SaltAndPepperBW).contains(this);
     }
@@ -84,12 +84,20 @@ public enum FilterType {
             return new FilterType[]{H, L, S};
         else if (this == SkinDetection)
             return new FilterType[]{Default};
+        else if (this == GreenPeppers)
+            return new FilterType[]{Default};
+        else if (this == RedEyes)
+            return new FilterType[]{Default};
+        else if (this == MovingAverage)
+            return new FilterType[]{Default};
+        else if (this == MeanAverage)
+            return new FilterType[]{Default};
         else
             return new FilterType[]{};
     }
 
-    public FilterType[] getAllSubFilters()  {
-        if (isLayered())    {
+    public FilterType[] getAllLayers()  {
+        if (isFilterLayered())    {
             if (this == SpreadAndSmoothed)
                 return new FilterType[]{Smoothed, Spread};
             else if (this == SpreadSmoothedGreyscale)

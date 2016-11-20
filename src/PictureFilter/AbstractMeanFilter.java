@@ -28,9 +28,9 @@ public abstract class AbstractMeanFilter implements PictureFilter {
         return pixels;
     }
 
-    protected abstract Color calculate(ArrayList<Color> pixels);
+    protected abstract Color calculate(ArrayList<Color> pixels, int i, int j);
 
     public Color filter (int i, int j)  {
-        return calculate(getArea(i,j));
+        return calculate(getArea(i,j), i, j);
     }
 }

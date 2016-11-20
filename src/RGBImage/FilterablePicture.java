@@ -44,7 +44,7 @@ public class FilterablePicture {
         width = new SafePictureEdges(picture.width());
         height = new SafePictureEdges(picture.height());
 
-        FilterType[] filterTypes = filterType.getAllSubFilters();
+        FilterType[] filterTypes = filterType.getAllLayers();
         for (FilterType type: filterTypes)    {
             filter = FilterFactory.getFilter(this, type, arg);
             picture = applyFilter(filter);

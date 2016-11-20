@@ -1,9 +1,7 @@
 import PictureFilter.FilterType;
-import RGBImage.FilterablePicture;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.logging.Filter;
 
 /**
  * Created by Magda on 12.11.2016.
@@ -76,11 +74,16 @@ public class Memory {
 
         argMemory.put(FilterType.SaltAndPepperBW, 5.);
 
-        argMemory.put(FilterType.MovingAverage, 1.);
+        argMemory.put(FilterType.MovingAverageBW, 1.);
 
-        argMemory.put(FilterType.MeanAverage, 1.);
+        argMemory.put(FilterType.MeanAverageBW, 1.);
 
         baseImageMemory.put(FilterType.SkinDetection, new File ("images\\face1.jpg"));
+
+        baseImageMemory.put(FilterType.GreenPeppers, new File ("images\\peppers.png"));
+
+        baseImageMemory.put(FilterType.RedEyes, new File ("images\\face2.jpg"));
+
     }
 
     public File getDefaultBaseImage() {
