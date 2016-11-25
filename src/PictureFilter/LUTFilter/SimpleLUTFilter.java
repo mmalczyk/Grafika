@@ -1,6 +1,6 @@
-package PictureFilter;
+package PictureFilter.LUTFilter;
 import RGBImage.FilterablePicture;
-import SpecialColor.ColorCalculator;
+import SpecialColor.SafeColor;
 
 import java.awt.*;
 
@@ -8,24 +8,23 @@ import java.awt.*;
  * Created by Magda on 01.11.2016.
  * Picture filter that needs a lookup table
  */
-public class SimpleLUTFilter implements PictureFilter{
-
-    protected int[] LUT;
-    protected FilterablePicture picture;
+public class SimpleLUTFilter extends AbstractLUTFilter{
 
     public SimpleLUTFilter(FilterablePicture picture)  {
-        this.picture = picture;
-        LUT = createLookUpTable(1);
+        initialize(picture, 0, 1);
     }
 
-    private static int[] createLookUpTable(int newB)
-    {
-        int[] lut = new int[256];
+    @Override
+    protected void prepareForLUT(double arg) {
+        //empty by design
+    }
+
+    @Override
+    protected void fillLookUpTable(double newB) {
         int B = 8;
         int delta = (int)Math.pow(2, B - newB);
-        for (int i = 0; i < 256; i++)
-            lut[i] = getColor(i, delta);
-        return lut;
+        for (int i = 0; i < SafeColor.getUpperLimit(); i++)
+            LUT[i] = getColor(i, delta);
     }
 
     private static int getColor(int color, int delta)   {
@@ -37,9 +36,9 @@ public class SimpleLUTFilter implements PictureFilter{
     public Color filter (int i, int j)
     {
         Color color = picture.getAt(i,j);
-        int newRed = LUT[color.getRed()];
-        int newGreen = LUT[color.getGreen()];
-        int newBlue = LUT[color.getBlue()];
+        int newRed = (int)LUT[color.getRed()];
+        int newGreen = (int)LUT[color.getGreen()];
+        int newBlue = (int)LUT[color.getBlue()];
         return new Color(Math.abs(newRed), Math.abs(newGreen), Math.abs(newBlue));
     }
 }

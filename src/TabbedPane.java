@@ -15,7 +15,7 @@ public class TabbedPane extends JPanel {
 
 
     private JTabbedPane tabbedPane;
-    private FilterType[] tabOrder;
+    private ArrayList<FilterType> tabOrder;
 
     private  FilterablePicture currentPicture;
 
@@ -26,7 +26,7 @@ public class TabbedPane extends JPanel {
 
     private Memory memory;
 
-    public TabbedPane(FilterType[] tabOrder) {
+    public TabbedPane(ArrayList<FilterType> tabOrder) {
         super(new GridLayout(1, 1));
         setLayout(new BorderLayout());
         buildMainMenu();
@@ -64,7 +64,7 @@ public class TabbedPane extends JPanel {
     }
 
     private FilterType getTabsFilterType(int index)    {
-        return tabOrder[index];
+        return tabOrder.get(index);
     }
 
     private void setImage(ArrayList<JComponent> images, int index)   {

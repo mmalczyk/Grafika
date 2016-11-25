@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 import PictureFilter.FilterType;
 
@@ -8,7 +9,7 @@ import PictureFilter.FilterType;
  */
 public class Main {
 
-    private FilterType[] tabOrder = FilterType.getMainTypes();
+    private ArrayList<FilterType> tabOrder = FilterType.getMainTypes();
 
 
     private TabbedPane tabbedPane;

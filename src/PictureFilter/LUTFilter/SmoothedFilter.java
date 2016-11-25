@@ -1,6 +1,7 @@
-package PictureFilter;
+package PictureFilter.LUTFilter;
 
 import RGBImage.FilterablePicture;
+import SpecialColor.SafeColor;
 import SpecialColor.YCbCrColor;
 
 import java.awt.*;
@@ -8,21 +9,25 @@ import java.awt.*;
 /**
  * Created by Magda on 06.11.2016.
  */
-public class SmoothedFilter implements PictureFilter{
+public class SmoothedFilter extends AbstractLUTFilter{
 
     private double[] distribution;
-    private double[] LUT;
-    private FilterablePicture picture;
 
     public SmoothedFilter(FilterablePicture picture)  {
-        this.picture = picture;
-        findDistribution();
-        LUT = createLookUpTable();
+        initialize(picture, 0, 0);
     }
 
-    private void findDistribution()
+    public Color filter (int i, int j)
     {
-        final int imax = 255;
+        YCbCrColor color = new YCbCrColor(picture.getAt(i,j));
+        double lu = color.getYValue();
+        color.setYValue(LUT[(int)lu]);
+        return color.getRGB();
+    }
+
+    @Override
+    protected void prepareForLUT(double arg) {
+        final int imax = SafeColor.getUpperLimit();
         distribution = new double[imax+1];
         for(int i=0; i<picture.width(); i++)
             for (int j=0; j<picture.height(); j++)
@@ -34,27 +39,14 @@ public class SmoothedFilter implements PictureFilter{
 
         for(int i=0; i<=imax; i++)
             distribution[i] = distribution[i]/sum;
-
     }
 
-    private double[] createLookUpTable()
-    {
-        final int imax = 255;
-        double[] lut = new double[imax+1];
-
+    @Override
+    protected void fillLookUpTable(double arg) {
+        final int imax = SafeColor.getUpperLimit();
         for (int i = 0; i <= imax; i++)
-            lut[i] = ((distribution[i]-distribution[0]) / (1-distribution[0])) * imax;
-        return lut;
+            LUT[i] = ((distribution[i]-distribution[0]) / (1-distribution[0])) * imax;
     }
-
-    public Color filter (int i, int j)
-    {
-        YCbCrColor color = new YCbCrColor(picture.getAt(i,j));
-        double lu = color.getYValue();
-        color.setYValue(LUT[(int)lu]);
-        return color.getRGB();
-    }
-
 }
 
 

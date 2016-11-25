@@ -1,5 +1,8 @@
 package PictureFilter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 
 import static java.util.EnumSet.of;
@@ -15,7 +18,8 @@ public enum FilterType {
     SpreadSmoothedGreyscale(28), UniformSpreadDisruption(29), UniformSpreadDisruptionBW(30), NormalDisruption(31),
     NormalDisruptionBW(32), SaltAndPepper(33), SaltAndPepperBW(34), MovingAverageBW(35), MeanAverageBW(36), toYCbCr(37),
     Y(38), Cb(39), Cr(40), YCbCrToRGB(41), HLS(42), H(43), L(44), S(45), SkinDetection(46), GreenPeppers(47),
-    RedEyes(48), MovingAverage(49), MeanAverage(50);
+    RedEyes(48), MovingAverage(49), MeanAverage(50), Binarised(51), OptimalThreshold(52), OtsuBinarised(53),
+    BensenBinarisation(54), MixedBinarisation(55);
 
 
     private int value;
@@ -27,21 +31,23 @@ public enum FilterType {
             "SpreadAndSmoothed", "SpreadSmoothedGreyscale", "UniformSpreadDisruption", "UniformSpreadDisruptionB&W",
             "NormalDisruption", "NormalDisruptionBW", "SaltAndPepper", "SaltAndPepperBW", "MovingAverageBW", "MeanAverageBW",
             "toYCbCr", "Y", "Cb", "Cr", "YCbCrToRGB", "HLS", "H", "L", "S", "SkinDetection", "GreenPeppers", "RedEyes",
-            "MovingAverage", "MeanAverage"
+            "MovingAverage", "MeanAverage", "Binarised", "OptimalThreshold", "OtsuBinarised", "BensenBinarisation",
+            "MixedBinarisation"
     };
 
-    private static FilterType[] mainTypes = new FilterType[]{
+    private static ArrayList<FilterType> mainTypes = new ArrayList<FilterType>(Arrays.asList(new FilterType[]{
             Default, Red, Green, Blue, BlackAndWhite, Negative, Sepia, Rotated, Displaced,
             LUT, Faded, Added, AddedAndSaturated, AddedWithTransparency, Subtracted, Multiplied,
             Divided, DifferencesBySubtraction, DifferencesByDivision, RHistogram, GHistogram, BHistogram,
             GreyScaleHistogram, Contrast, LHistogram, Spread, Smoothed, SpreadAndSmoothed,
             SpreadSmoothedGreyscale, UniformSpreadDisruption, UniformSpreadDisruptionBW, NormalDisruption,
             NormalDisruptionBW, SaltAndPepper, SaltAndPepperBW, MovingAverageBW, MeanAverageBW, toYCbCr, YCbCrToRGB, HLS,
-            SkinDetection, GreenPeppers, RedEyes, MovingAverage, MeanAverage
+            SkinDetection, GreenPeppers, RedEyes, MovingAverage, MeanAverage, Binarised, OptimalThreshold, OtsuBinarised,
+            BensenBinarisation, MixedBinarisation
+    }));
 
-    };
-
-    public static FilterType[] getMainTypes()   {
+    public static ArrayList<FilterType> getMainTypes()   {
+        Collections.reverse(mainTypes);
         return mainTypes;
     }
 
@@ -66,7 +72,8 @@ public enum FilterType {
     public boolean hasVariable()    {
         return EnumSet.of(Sepia, Rotated, Displaced, Faded, Added, AddedAndSaturated, AddedWithTransparency,
                 Contrast, UniformSpreadDisruption, UniformSpreadDisruptionBW, NormalDisruption, NormalDisruptionBW,
-                SaltAndPepper, SaltAndPepperBW, MovingAverageBW, MeanAverageBW, MovingAverage, MeanAverage
+                SaltAndPepper, SaltAndPepperBW, MovingAverageBW, MeanAverageBW, MovingAverage, MeanAverage, Binarised,
+                OptimalThreshold, BensenBinarisation, MixedBinarisation
                 ).contains(this);
     }
 

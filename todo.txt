@@ -1,3 +1,0 @@
---file menu for each panel
---LUT
---options

@@ -84,6 +84,19 @@ public class Memory {
 
         baseImageMemory.put(FilterType.RedEyes, new File ("images\\face2.jpg"));
 
+        argMemory.put(FilterType.Binarised, 80.);
+
+        argMemory.put(FilterType.OptimalThreshold, 80.);
+
+        baseImageMemory.put(FilterType.OtsuBinarised, new File ("images\\gazeta.jpg"));
+
+        baseImageMemory.put(FilterType.BensenBinarisation, new File ("images\\gazeta.jpg"));
+
+        argMemory.put(FilterType.BensenBinarisation, 1.);
+
+        baseImageMemory.put(FilterType.MixedBinarisation, new File ("images\\gazeta.jpg"));
+
+        argMemory.put(FilterType.MixedBinarisation, 120.);
     }
 
     public File getDefaultBaseImage() {

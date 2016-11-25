@@ -1,6 +1,7 @@
-package PictureFilter;
+package PictureFilter.LUTFilter;
 
 import RGBImage.FilterablePicture;
+import SpecialColor.SafeColor;
 import SpecialColor.YCbCrColor;
 
 import java.awt.*;
@@ -8,20 +9,25 @@ import java.awt.*;
 /**
  * Created by Magda on 06.11.2016.
  */
-public class SpreadFilter implements PictureFilter{
+public class SpreadFilter extends AbstractLUTFilter{
 
-    private double[] LUT;
     private double maxValue;
     private double minValue;
-    private FilterablePicture picture;
 
     public SpreadFilter(FilterablePicture picture)  {
-        this.picture = picture;
-        findTotalMinMax();
-        LUT = createLookUpTable();
+        initialize(picture, 0, 0);
     }
 
-    private void findTotalMinMax()    {
+    public Color filter (int i, int j)
+    {
+        YCbCrColor color = new YCbCrColor(picture.getAt(i,j));
+        double lu = color.getYValue();
+        color.setYValue(LUT[(int)lu]);
+        return color.getRGB();
+    }
+
+    @Override
+    protected void prepareForLUT(double arg) {
         maxValue = Double.MIN_VALUE;
         minValue = Double.MAX_VALUE;
         double value;
@@ -35,24 +41,12 @@ public class SpreadFilter implements PictureFilter{
             }
     }
 
-    private double[] createLookUpTable()
-    {
-        final int imax = 255;
-        double[] lut = new double[imax+1];
-
+    @Override
+    protected void fillLookUpTable(double arg) {
+        final int imax = SafeColor.getUpperLimit();
         for (int i = 0; i <= imax; i++)
-            lut[i] = ((double)imax/(maxValue-minValue))*(i-minValue);
-        return lut;
+            LUT[i] = ((double)imax/(maxValue-minValue))*(i-minValue);
     }
-
-    public Color filter (int i, int j)
-    {
-        YCbCrColor color = new YCbCrColor(picture.getAt(i,j));
-        double lu = color.getYValue();
-        color.setYValue(LUT[(int)lu]);
-        return color.getRGB();
-    }
-
 }
 
 
