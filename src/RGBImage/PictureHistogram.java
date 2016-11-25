@@ -59,9 +59,9 @@ import org.jfree.ui.TextAnchor;
  * This demo shows a simple bar chart created using the {@link XYSeriesCollection} dataset.
  *
  */
-public class PictureHistogram{
+class PictureHistogram{
 
-    private ChartPanel chartPanel;
+    private final ChartPanel chartPanel;
 
     public PictureHistogram(FilterablePicture picture) {
         JFreeChart chart = createChart(createDataset(picture));

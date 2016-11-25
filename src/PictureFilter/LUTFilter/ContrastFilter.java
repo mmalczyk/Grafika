@@ -24,18 +24,17 @@ public class ContrastFilter extends AbstractLUTFilter {
     @Override
     protected void fillLookUpTable(double a)
     {
-        final int imax = SafeColor.getUpperLimit();
+        final int iMax = SafeColor.getUpperLimit();
         double verge;
-        for (int i = 0; i <= imax; i++)
+        for (int i = 0; i <= iMax; i++)
         {
-            verge = a*(i-(double)imax/2.) + (double)imax/2.;
+            verge = a*(i-(double)iMax/2.) + (double)iMax/2.;
             if (verge<0)
                 LUT[i] = 0;
-            else if (verge>imax)
-                LUT[i] = imax;
+            else if (verge>iMax)
+                LUT[i] = iMax;
             else
-                LUT[i] = verge;//(int) a*(i-(double)imax/2.) + i;
-            ;
+                LUT[i] = verge;
         }
     }
 

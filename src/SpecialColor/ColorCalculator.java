@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class ColorCalculator {
 
-    private static Random random = new Random();
+    private static final Random random = new Random();
     //private
 
     private static int getAvg(Color color)  {
@@ -104,11 +104,11 @@ public class ColorCalculator {
                 r==0 ? 255: (int)(color1.getBlue() / b) * N);
     }
 
-    public static Color addWithDifferencesA(Color color1, Color color2, Color highlight)  {
+    public static Color addWithDifferencesA(Color color1, Color color2, @SuppressWarnings("SameParameterValue") Color highlight)  {
         return color1.getRGB() - color2.getRGB() == 0 ? color1 : highlight;
     }
 
-    public static Color addWithDifferencesB(Color color1, Color color2, Color highlight)  {
+    public static Color addWithDifferencesB(Color color1, Color color2, @SuppressWarnings("SameParameterValue") Color highlight)  {
         return (double) color1.getRGB() / (double) color2.getRGB() == 1. ? color1 : highlight;
     }
 

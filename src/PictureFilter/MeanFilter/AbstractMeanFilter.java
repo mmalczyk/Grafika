@@ -14,11 +14,11 @@ import java.util.Comparator;
  */
 public abstract class AbstractMeanFilter implements PictureFilter {
 
-    protected Picture picture;
-    protected static int radius = 1;
+    final Picture picture;
+    private int radius = 1;
     private Comparator<Color> pixelComparator;
 
-    public AbstractMeanFilter(FilterablePicture picture, int radius)  {
+    AbstractMeanFilter(FilterablePicture picture, int radius)  {
         this.picture = picture.copyPicture();
         this.radius = radius;
         pixelComparator = new LuminanceComparator();
@@ -40,7 +40,7 @@ public abstract class AbstractMeanFilter implements PictureFilter {
         return calculate(getArea(i,j), i, j);
     }
 
-    protected void setPixelComparator(Comparator<Color> pixelComparator)    {
+    void setPixelComparator(Comparator<Color> pixelComparator)    {
         this.pixelComparator = pixelComparator;
     }
 }

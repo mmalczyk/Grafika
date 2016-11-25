@@ -9,10 +9,10 @@ import java.util.ArrayList;
  * Created by Magda on 25.11.2016.
  */
 public class MixedBinarisationFilter extends BensenBinarisationFilter{
-    private double globalThreshold;
-    private double margin;
+    private final double globalThreshold;
+    private final double margin;
 
-    public MixedBinarisationFilter(FilterablePicture picture, int radius, double globalThreshold, double margin) {
+    public MixedBinarisationFilter(FilterablePicture picture, @SuppressWarnings("SameParameterValue") int radius, double globalThreshold, @SuppressWarnings("SameParameterValue") double margin) {
         super(picture, radius);
         this.globalThreshold = globalThreshold;
         this.margin = margin;

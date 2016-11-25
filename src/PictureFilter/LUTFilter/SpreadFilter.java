@@ -43,9 +43,9 @@ public class SpreadFilter extends AbstractLUTFilter{
 
     @Override
     protected void fillLookUpTable(double arg) {
-        final int imax = SafeColor.getUpperLimit();
-        for (int i = 0; i <= imax; i++)
-            LUT[i] = ((double)imax/(maxValue-minValue))*(i-minValue);
+        final int iMax = SafeColor.getUpperLimit();
+        for (int i = 0; i <= iMax; i++)
+            LUT[i] = ((double)iMax/(maxValue-minValue))*(i-minValue);
     }
 }
 

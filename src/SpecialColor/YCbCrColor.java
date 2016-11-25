@@ -8,8 +8,8 @@ import java.awt.*;
 public class YCbCrColor {
     private Color color;
     private double Y;
-    private double Cb;
-    private double Cr;
+    private final double Cb;
+    private final double Cr;
 
 
     public YCbCrColor(Color color) {

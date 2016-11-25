@@ -15,7 +15,7 @@ public class BensenBinarisationFilter extends AbstractMeanFilter{
         super(picture, radius);
     }
 
-    protected double setThreshold(ArrayList<Color> pixels)  {
+    double setThreshold(ArrayList<Color> pixels)  {
         YCbCrColor lowest = new YCbCrColor(pixels.get(0));
         YCbCrColor highest = new YCbCrColor(pixels.get(pixels.size()-1));
         return (lowest.getYValue()+highest.getYValue())/2.;

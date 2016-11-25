@@ -7,16 +7,17 @@ import PictureFilter.FilterType;
 /**
  * Created by Magda on 15.10.2016.
  */
-public class Main {
+class Main {
 
-    private ArrayList<FilterType> tabOrder = FilterType.getMainTypes();
+    private final ArrayList<FilterType> tabOrder = FilterType.getMainTypes();
 
 
+    @SuppressWarnings("FieldCanBeLocal")
     private TabbedPane tabbedPane;
 
     private void createAndShowGUI() {
         JFrame frame = new JFrame("Portfolio");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         tabbedPane = new TabbedPane(tabOrder);
         frame.add(tabbedPane, BorderLayout.CENTER);
@@ -26,12 +27,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
+        SwingUtilities.invokeLater(() -> {
                 UIManager.put("swing.boldMetal", Boolean.FALSE);
                 (new Main()).createAndShowGUI();
-            }
-        });
+            });
     }
 
 }

@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 
-import static java.util.EnumSet.of;
-
 /**
  * Created by Magda on 13.10.2016.
  */
@@ -22,9 +20,9 @@ public enum FilterType {
     BensenBinarisation(54), MixedBinarisation(55);
 
 
-    private int value;
+    private final int value;
 
-    private static String[] names = new String[]{"Original", "Red", "Green", "Blue", "B&W", "Negative", "Sepia",
+    private static final String[] names = new String[]{"Original", "Red", "Green", "Blue", "B&W", "Negative", "Sepia",
             "Rotated", "Displaced", "LUT", "Faded", "Added", "AddedAndSaturated", "AddedWithTransparency",
             "Subtracted", "Multiplied", "Divided", "DifferencesBySubtraction", "DifferencesByDivision", "RHistogram",
             "GHistogram", "BHistogram", "GreyScaleHistogram", "Contrast", "LHistogram", "Spread", "Smoothed",
@@ -35,7 +33,7 @@ public enum FilterType {
             "MixedBinarisation"
     };
 
-    private static ArrayList<FilterType> mainTypes = new ArrayList<FilterType>(Arrays.asList(new FilterType[]{
+    private static final ArrayList<FilterType> mainTypes = new ArrayList<FilterType>(Arrays.asList(new FilterType[]{
             Default, Red, Green, Blue, BlackAndWhite, Negative, Sepia, Rotated, Displaced,
             LUT, Faded, Added, AddedAndSaturated, AddedWithTransparency, Subtracted, Multiplied,
             Divided, DifferencesBySubtraction, DifferencesByDivision, RHistogram, GHistogram, BHistogram,
@@ -77,7 +75,7 @@ public enum FilterType {
                 ).contains(this);
     }
 
-    public boolean isFilterLayered()  {
+    private boolean isFilterLayered()  {
         return EnumSet.of(SpreadAndSmoothed, SpreadSmoothedGreyscale,
                 UniformSpreadDisruptionBW, NormalDisruptionBW, SaltAndPepperBW).contains(this);
     }

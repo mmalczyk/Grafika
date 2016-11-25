@@ -16,8 +16,8 @@ public class FilterablePicture {
 
     private class SafePictureEdges {
 
-        private int lowerBound = 0;
-        private int upperBound;
+        private final int lowerBound = 0;
+        private final int upperBound;
 
         private SafePictureEdges(int bound)    {
             upperBound = bound - 1;
@@ -35,8 +35,8 @@ public class FilterablePicture {
     private Picture picture;
 
     private FilterWrapper filter;
-    private SafePictureEdges width;
-    private SafePictureEdges height;
+    private final SafePictureEdges width;
+    private final SafePictureEdges height;
 
     public FilterablePicture(String path, FilterType filterType, Double arg)   {
         picture = new Picture(path);

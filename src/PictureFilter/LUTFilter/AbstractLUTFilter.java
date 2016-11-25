@@ -7,15 +7,15 @@ import SpecialColor.SafeColor;
 /**
  * Created by Magda on 24.11.2016.
  */
-public abstract class AbstractLUTFilter implements PictureFilter {
-    protected double[] LUT;
-    protected FilterablePicture picture;
+abstract class AbstractLUTFilter implements PictureFilter {
+    double[] LUT;
+    FilterablePicture picture;
 
-    protected final void initialize(FilterablePicture picture, double prepArg, double LUTarg)    {
+    final void initialize(FilterablePicture picture, double prepArg, double LUTArg)    {
         this.picture = picture;
         LUT = new double[SafeColor.getUpperLimit()+1];
         prepareForLUT(prepArg);
-        fillLookUpTable(LUTarg);
+        fillLookUpTable(LUTArg);
     }
 
     protected abstract void prepareForLUT(double arg);

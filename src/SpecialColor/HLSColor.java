@@ -6,9 +6,9 @@ import java.awt.*;
  http://docs.opencv.org/2.4/modules/imgproc/doc/miscellaneous_transformations.html
  */
 public class HLSColor {
-    private Color color;
-    private double max;
-    private double min;
+    private final Color color;
+    private final double max;
+    private final double min;
     private double rScaled;
     private double gScaled;
     private double bScaled;
@@ -24,7 +24,7 @@ public class HLSColor {
         min = min(rScaled, gScaled, bScaled);
         L = calculateL();
         S = calculateS();
-        H = calculateH(color);
+        H = calculateH();
         scaleHLS();
     }
 
@@ -59,7 +59,7 @@ public class HLSColor {
             return (max-min)/(2.-(max+min));
     }
 
-    private double calculateH(Color color) {
+    private double calculateH() {
         double value = 0;
         if (max == rScaled)
             value = 60.*(gScaled-bScaled)/S;

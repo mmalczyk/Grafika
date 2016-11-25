@@ -11,11 +11,11 @@ import PictureFilter.FilterFactory;
 import PictureFilter.FilterType;
 import RGBImage.FilterablePicture;
 
-public class TabbedPane extends JPanel {
+class TabbedPane extends JPanel {
 
 
-    private JTabbedPane tabbedPane;
-    private ArrayList<FilterType> tabOrder;
+    private final JTabbedPane tabbedPane;
+    private final ArrayList<FilterType> tabOrder;
 
     private  FilterablePicture currentPicture;
 
@@ -24,9 +24,9 @@ public class TabbedPane extends JPanel {
     //TODO better way to initialize memory
     //TODO add description of arguments
 
-    private Memory memory;
+    private final Memory memory;
 
-    public TabbedPane(ArrayList<FilterType> tabOrder) {
+    TabbedPane(ArrayList<FilterType> tabOrder) {
         super(new GridLayout(1, 1));
         setLayout(new BorderLayout());
         buildMainMenu();

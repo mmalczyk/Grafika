@@ -7,8 +7,8 @@ import java.awt.*;
  */
 public class SafeColor {
 
-    final static int lowerLimit = 0;
-    final static int upperLimit = 255;
+    private final static int lowerLimit = 0;
+    private final static int upperLimit = 255;
 
     public static int getLowerLimit() {
         return lowerLimit;
@@ -18,11 +18,11 @@ public class SafeColor {
         return upperLimit;
     }
 
-    public static int applyBounds(int r) {
+    private static int applyBounds(int r) {
         return r >= lowerLimit ? (r <= upperLimit ? r : upperLimit) : lowerLimit;
     }
 
-    public static int applyModuloBounds(int r)  {
+    private static int applyModuloBounds(int r)  {
         return r >= lowerLimit ? r % upperLimit : lowerLimit;
     }
 

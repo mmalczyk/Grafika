@@ -5,12 +5,10 @@ import PictureFilter.MeanFilter.*;
 import SpecialColor.ColorCalculator;
 import RGBImage.FilterablePicture;
 import SpecialColor.HLSColor;
-import SpecialColor.SafeColor;
 import SpecialColor.YCbCrColor;
 
 import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
 
 /**
  * Created by Magda on 15.10.2016.
@@ -57,7 +55,7 @@ public class FilterFactory {
             case Y: filter = getYFilter(picture, arg); break;
             case Cb: filter = getCbFilter(picture, arg); break;
             case Cr: filter = getCrFilter(picture, arg); break;
-            case YCbCrToRGB: filter = getYCbCrtoRGBFilter(picture, arg); break;
+            case YCbCrToRGB: filter = getYCbCrToRGBFilter(picture, arg); break;
             case HLS: filter = getHLSFilter(picture, arg); break;
             case H: filter = getHFilter(picture, arg); break;
             case L: filter = getLFilter(picture, arg); break;
@@ -223,7 +221,7 @@ public class FilterFactory {
         return (int i, int j) -> ColorCalculator.getCr(picture.getAt(i, j));
     }
 
-    private static PictureFilter getYCbCrtoRGBFilter(FilterablePicture picture, Double arg)  {
+    private static PictureFilter getYCbCrToRGBFilter(FilterablePicture picture, Double arg)  {
         return (int i, int j) -> new YCbCrColor(picture.getAt(i,j)).getRGB();
     }
 

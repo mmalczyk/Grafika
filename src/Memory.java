@@ -6,17 +6,18 @@ import java.util.HashMap;
 /**
  * Created by Magda on 12.11.2016.
  */
-public class Memory {
+class Memory {
 
-    private File defaultBaseImage = new File("images\\LENA_512.jpg");
-    private File defaultLayerImage = new File("images\\eagle.jpg");
-    private Double defaultArg = 0.;
+    private final File defaultBaseImage = new File("images\\LENA_512.jpg");
+    private final File defaultLayerImage = new File("images\\eagle.jpg");
+    @SuppressWarnings("FieldCanBeLocal")
+    private final Double defaultArg = 0.;
 
-    private HashMap<FilterType, File> baseImageMemory = new HashMap<>();
-    private HashMap<FilterType, File> layerImageMemory = new HashMap<>();
-    private HashMap<FilterType, Double> argMemory = new HashMap<>();
+    private final HashMap<FilterType, File> baseImageMemory = new HashMap<>();
+    private final HashMap<FilterType, File> layerImageMemory = new HashMap<>();
+    private final HashMap<FilterType, Double> argMemory = new HashMap<>();
 
-    public Memory() {
+    Memory() {
         loadMemory();
     }
 
@@ -99,26 +100,26 @@ public class Memory {
         argMemory.put(FilterType.MixedBinarisation, 120.);
     }
 
-    public File getDefaultBaseImage() {
+    private File getDefaultBaseImage() {
         return defaultBaseImage;
     }
 
-    public File getDefaultLayerImage() {
+    File getDefaultLayerImage() {
         return defaultLayerImage;
     }
 
-    public Double getDefaultArg() {
+    private Double getDefaultArg() {
         return defaultArg;
     }
 
-    public File baseGet(FilterType key)    {
+    File baseGet(FilterType key)    {
         if (baseImageMemory.containsKey(key))
             return baseImageMemory.get(key);
         else
             return getDefaultBaseImage();
     }
 
-    public File layerGet(FilterType key)    {
+    File layerGet(FilterType key)    {
         if (layerImageMemory.containsKey(key))
             return layerImageMemory.get(key);
         else
