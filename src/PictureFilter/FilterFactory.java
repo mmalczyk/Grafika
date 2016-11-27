@@ -278,7 +278,7 @@ public class FilterFactory {
     }
 
     private static PictureFilter getMixedBinarisationFilter(FilterablePicture picture, Double arg) {
-        return new MixedBinarisationFilter(picture, 5, arg, 20.);
+        return new MixedBinarisationFilter(picture, 5, arg, 50.);
     }
 
 }

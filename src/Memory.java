@@ -97,7 +97,7 @@ class Memory {
 
         baseImageMemory.put(FilterType.MixedBinarisation, new File ("images\\gazeta.jpg"));
 
-        argMemory.put(FilterType.MixedBinarisation, 120.);
+        argMemory.put(FilterType.MixedBinarisation, 90.);
     }
 
     private File getDefaultBaseImage() {
