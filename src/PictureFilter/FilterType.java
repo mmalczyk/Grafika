@@ -17,7 +17,8 @@ public enum FilterType {
     NormalDisruptionBW(32), SaltAndPepper(33), SaltAndPepperBW(34), MovingAverageBW(35), MeanAverageBW(36), toYCbCr(37),
     Y(38), Cb(39), Cr(40), YCbCrToRGB(41), HLS(42), H(43), L(44), S(45), SkinDetection(46), GreenPeppers(47),
     RedEyes(48), MovingAverage(49), MeanAverage(50), Binarised(51), OptimalThreshold(52), OtsuBinarised(53),
-    BensenBinarisation(54), MixedBinarisation(55);
+    BensenBinarisation(54), MixedBinarisation(55), Erosion(56), ErosionCircularMask(57), Dilation(58),
+    DilationCircularMask(59), Open(60), Close(61), ColorErosion(62), ColorDilation(63);
 
 
     private final int value;
@@ -30,7 +31,8 @@ public enum FilterType {
             "NormalDisruption", "NormalDisruptionBW", "SaltAndPepper", "SaltAndPepperBW", "MovingAverageBW", "MeanAverageBW",
             "toYCbCr", "Y", "Cb", "Cr", "YCbCrToRGB", "HLS", "H", "L", "S", "SkinDetection", "GreenPeppers", "RedEyes",
             "MovingAverage", "MeanAverage", "Binarised", "OptimalThreshold", "OtsuBinarised", "BensenBinarisation",
-            "MixedBinarisation"
+            "MixedBinarisation", "Erosion", "ErosionCircularMask", "Dilation", "DilationCircularMask", "Open", "Close",
+            "ColorErosion", "ColorDilation"
     };
 
     private static final ArrayList<FilterType> mainTypes = new ArrayList<FilterType>(Arrays.asList(new FilterType[]{
@@ -41,7 +43,8 @@ public enum FilterType {
             SpreadSmoothedGreyscale, UniformSpreadDisruption, UniformSpreadDisruptionBW, NormalDisruption,
             NormalDisruptionBW, SaltAndPepper, SaltAndPepperBW, MovingAverageBW, MeanAverageBW, toYCbCr, YCbCrToRGB, HLS,
             SkinDetection, GreenPeppers, RedEyes, MovingAverage, MeanAverage, Binarised, OptimalThreshold, OtsuBinarised,
-            BensenBinarisation, MixedBinarisation
+            BensenBinarisation, MixedBinarisation, Erosion, ErosionCircularMask, Dilation, DilationCircularMask, Open,
+            Close, ColorErosion, ColorDilation
     }));
 
     public static ArrayList<FilterType> getMainTypes()   {
@@ -71,13 +74,16 @@ public enum FilterType {
         return EnumSet.of(Sepia, Rotated, Displaced, Faded, Added, AddedAndSaturated, AddedWithTransparency,
                 Contrast, UniformSpreadDisruption, UniformSpreadDisruptionBW, NormalDisruption, NormalDisruptionBW,
                 SaltAndPepper, SaltAndPepperBW, MovingAverageBW, MeanAverageBW, MovingAverage, MeanAverage, Binarised,
-                OptimalThreshold, BensenBinarisation, MixedBinarisation
+                OptimalThreshold, BensenBinarisation, MixedBinarisation, Erosion, ErosionCircularMask, Dilation,
+                DilationCircularMask, Open, Close, ColorErosion, ColorDilation
                 ).contains(this);
     }
 
     private boolean isFilterLayered()  {
         return EnumSet.of(SpreadAndSmoothed, SpreadSmoothedGreyscale,
-                UniformSpreadDisruptionBW, NormalDisruptionBW, SaltAndPepperBW).contains(this);
+                UniformSpreadDisruptionBW, NormalDisruptionBW, SaltAndPepperBW, Erosion, ErosionCircularMask,
+                Dilation, DilationCircularMask, Open, Close
+        ).contains(this);
     }
 
     public FilterType[] getSubTypes() {
@@ -97,6 +103,22 @@ public enum FilterType {
             return new FilterType[]{Default};
         else if (this == MeanAverage)
             return new FilterType[]{Default};
+        else if (this == Erosion)
+            return new FilterType[]{OtsuBinarised};
+        else if (this == ErosionCircularMask)
+            return new FilterType[]{OtsuBinarised};
+        else if (this == Dilation)
+            return new FilterType[]{OtsuBinarised};
+        else if (this == DilationCircularMask)
+            return new FilterType[]{OtsuBinarised};
+        else if (this == Open)
+            return new FilterType[]{OtsuBinarised};
+        else if (this == Close)
+            return new FilterType[]{OtsuBinarised};
+        else if (this == ColorErosion)
+            return new FilterType[]{Default};
+        else if (this == ColorDilation)
+            return new FilterType[]{Default};
         else
             return new FilterType[]{};
     }
@@ -113,6 +135,18 @@ public enum FilterType {
                 return new FilterType[]{BlackAndWhite, NormalDisruption};
             else if (this == SaltAndPepperBW)
                 return new FilterType[]{BlackAndWhite, SaltAndPepperBW};
+            else if (this == Erosion)
+                return new FilterType[]{OtsuBinarised, Erosion};
+            else if (this == ErosionCircularMask)
+                return new FilterType[]{OtsuBinarised, ErosionCircularMask};
+            else if (this == Dilation)
+                return new FilterType[]{OtsuBinarised, Dilation};
+            else if (this == DilationCircularMask)
+                return new FilterType[]{OtsuBinarised, DilationCircularMask};
+            else if (this == Open)
+                return new FilterType[]{OtsuBinarised, ErosionCircularMask, DilationCircularMask};
+            else if (this == Close)
+                return new FilterType[]{OtsuBinarised, DilationCircularMask, ErosionCircularMask};
             throw new UnsupportedOperationException("Enum initialization error");
         }
         else

@@ -51,7 +51,7 @@ public class FilterablePicture {
         }
     }
 
-    public FilterType getFilterType()   {
+    FilterType getFilterType()   {
         return filter.getType();
     }
 

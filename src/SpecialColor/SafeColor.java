@@ -34,4 +34,12 @@ public class SafeColor {
         return new Color(applyModuloBounds(r), applyModuloBounds(g), applyModuloBounds(b));
     }
 
+    public static Color binaryColor(int i){
+        if (i == 0)
+            return Color.WHITE;
+        else
+            return Color.BLACK;
+    }
+
+
 }

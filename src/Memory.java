@@ -98,6 +98,31 @@ class Memory {
         baseImageMemory.put(FilterType.MixedBinarisation, new File ("images\\gazeta.jpg"));
 
         argMemory.put(FilterType.MixedBinarisation, 90.);
+
+        baseImageMemory.put(FilterType.Erosion, new File("images\\morfology\\figury.png"));
+
+        argMemory.put(FilterType.Erosion, 1.);
+
+        argMemory.put(FilterType.ErosionCircularMask, 2.);
+
+        baseImageMemory.put(FilterType.Dilation, new File("images\\morfology\\figury.png"));
+
+        argMemory.put(FilterType.Dilation, 1.);
+
+        argMemory.put(FilterType.DilationCircularMask, 2.);
+
+        baseImageMemory.put(FilterType.Open, new File("images\\morfology\\figury.png"));
+
+        argMemory.put(FilterType.Open, 2.);
+
+        baseImageMemory.put(FilterType.Close, new File("images\\morfology\\figury.png"));
+
+        argMemory.put(FilterType.Close, 2.);
+
+        argMemory.put(FilterType.ColorErosion, 1.);
+
+        argMemory.put(FilterType.ColorDilation, 1.);
+
     }
 
     private File getDefaultBaseImage() {

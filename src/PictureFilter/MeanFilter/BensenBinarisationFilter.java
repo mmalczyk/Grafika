@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by Magda on 25.11.2016.
  */
-public class BensenBinarisationFilter extends AbstractMeanFilter{
+public class BensenBinarisationFilter extends AbstractMeanFilter {
 
     public BensenBinarisationFilter(FilterablePicture picture, int radius) {
         super(picture, radius);

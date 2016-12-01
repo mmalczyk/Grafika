@@ -1,5 +1,6 @@
 package PictureFilter;
 
+import PictureFilter.AreaFilter.*;
 import PictureFilter.LUTFilter.*;
 import PictureFilter.MeanFilter.*;
 import SpecialColor.ColorCalculator;
@@ -70,6 +71,12 @@ public class FilterFactory {
             case OtsuBinarised: filter = getOtsuBinarisationFilter(picture, arg); break;
             case BensenBinarisation: filter = getBensenBinarisationFilter(picture, arg); break;
             case MixedBinarisation: filter = getMixedBinarisationFilter(picture, arg); break;
+            case Erosion: filter = getErosionFilter(picture, arg); break;
+            case ErosionCircularMask: filter = getErosionCircularMaskFilter(picture, arg); break;
+            case Dilation: filter = getDilationFilter(picture, arg); break;
+            case DilationCircularMask: filter = getDilationCircularMaskFilter(picture, arg); break;
+            case ColorErosion: filter = getColorErosionFilter(picture, arg); break;
+            case ColorDilation: filter = getColorDilationFilter(picture, arg); break;
 
             default: filter = getDefaultFilter(picture, arg);
         }
@@ -280,5 +287,30 @@ public class FilterFactory {
     private static PictureFilter getMixedBinarisationFilter(FilterablePicture picture, Double arg) {
         return new MixedBinarisationFilter(picture, 5, arg, 50.);
     }
+
+    private static PictureFilter getErosionFilter(FilterablePicture picture, Double arg) {
+        return new ErosionFilter(picture, MaskGenerator.loadMaskAddress((int) arg.doubleValue()));
+    }
+
+    private static PictureFilter getErosionCircularMaskFilter(FilterablePicture picture, Double arg) {
+        return new ErosionFilter(picture, MaskGenerator.generateCircularPicture((int) arg.doubleValue()));
+    }
+
+    private static PictureFilter getDilationFilter(FilterablePicture picture, Double arg) {
+        return new DilationFilter(picture, MaskGenerator.loadMaskAddress((int) arg.doubleValue()));
+    }
+
+    private static PictureFilter getDilationCircularMaskFilter(FilterablePicture picture, Double arg) {
+        return new DilationFilter(picture, MaskGenerator.generateCircularPicture((int) arg.doubleValue()));
+    }
+
+    private static PictureFilter getColorErosionFilter(FilterablePicture picture, Double arg) {
+        return new ColorErosionFilter(picture, MaskGenerator.loadMaskAddress((int) arg.doubleValue()));
+    }
+
+    private static PictureFilter getColorDilationFilter(FilterablePicture picture, Double arg) {
+        return new ColorDilationFilter(picture, MaskGenerator.loadMaskAddress((int) arg.doubleValue()));
+    }
+
 
 }
